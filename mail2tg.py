@@ -23,8 +23,11 @@ def check_mail():
 
             unread_inbox_messages = imbox.messages(unread=True)
             for uid, message in unread_inbox_messages:
-                note = "{} sent to {}\n{}\n{}".format(
+                try:
+                    note = "{} sent to {}\n{}\n{}".format(
                     message.sent_from[0]["name"], message.sent_to[0]["email"], message.subject, message.body["plain"][0][:50])
+                except Exception:
+                    note = "someone sent to email to you"
                 url = "https://api.telegram.org/bot{}/sendMessage?chat_id={}&text={}".format(
                     token, chatId, note)
                 requests.get(url)
